@@ -1,10 +1,9 @@
-
-function Edit(){
+function Edit (){
     return(
         <div>
-            Edit
+            E
         </div>
-    )
+    );
 }
 
 export default Edit;

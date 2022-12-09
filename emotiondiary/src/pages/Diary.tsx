@@ -1,10 +1,9 @@
-
-function Diary(){
+function Diary (){
     return(
         <div>
-            Diary
+            D
         </div>
-    )
+    );
 }
 
 export default Diary;

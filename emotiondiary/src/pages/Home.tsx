@@ -1,10 +1,9 @@
-
-function Home(){
+function Home (){
     return(
         <div>
-            Home
+            H
         </div>
-    )
+    );
 }
 
 export default Home;

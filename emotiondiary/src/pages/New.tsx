@@ -1,10 +1,9 @@
-
-function New(){
+function New (){
     return(
         <div>
-            New
+            N
         </div>
-    )
+    );
 }
 
 export default New;
