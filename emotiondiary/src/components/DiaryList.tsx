@@ -1,4 +1,4 @@
-import React, { SetStateAction, useState } from "react";
+import React, {useState } from "react";
 
 interface dataProps{
     id:number,
@@ -6,7 +6,9 @@ interface dataProps{
     content:string,
     emotion:number,
   }
-
+interface diaryListProps{
+    diaryList:dataProps[];
+};
 interface sortOptionProps{
     value:string,
     name:string,
@@ -22,6 +24,12 @@ const sortOptionList:sortOptionProps[] = [
     {value:"oldest",name:"오래된 순"},
 ];
 
+const filterOptionList = [
+    {value:"all",name:"전부 다"},
+    {value:"good", name:"좋은 감정만"},
+    {value:"bad", name:"안 좋은 감정만"},
+];
+
 const ControlMenu  = ({value,onChange,optionList}:controlMenuProps)=>{
     return(
         <select value={value} onChange={(e)=> onChange(e.target.value)}>
@@ -35,9 +43,9 @@ const ControlMenu  = ({value,onChange,optionList}:controlMenuProps)=>{
 };
 
 
-const DiaryList = (diaryList:dataProps[]) =>{
+const DiaryList = ({diaryList}:diaryListProps) =>{
     const [sortType,setSortType] = useState("latest");
-    
+    const [filter, setFilter] = useState("all");
     const getProcessedDiaryList = ()=>{
         const compare = (a:dataProps,b:dataProps)=>{
             if(sortType === "latest"){
@@ -57,6 +65,11 @@ const DiaryList = (diaryList:dataProps[]) =>{
                 value={sortType}
                 onChange={setSortType}
                 optionList = {sortOptionList}
+            ></ControlMenu>
+            <ControlMenu
+                value={filter}
+                onChange={setFilter}
+                optionList = {filterOptionList}
             ></ControlMenu>
             {getProcessedDiaryList().map((it)=>(
                 <div key = {it.id}>{it.content}</div>

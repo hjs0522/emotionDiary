@@ -37,7 +37,6 @@ function Home (){
         content:"",
         emotion:1,}]);
     const [curDate,setCurDate] = useState(new Date());
-    
     const headText = `${curDate.getFullYear()}년 ${curDate.getMonth()+1}월`
     
     useEffect(()=>{
