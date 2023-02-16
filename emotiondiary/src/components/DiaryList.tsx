@@ -1,5 +1,7 @@
 import React, {useState } from "react";
-
+import { useNavigate } from "react-router-dom";
+import MyButton from "./MyButton";
+import styled from 'styled-components';
 interface dataProps{
     id:number,
     date:number,
@@ -19,6 +21,36 @@ interface controlMenuProps{
     optionList:sortOptionProps[],
 }
 
+const DiaryListContainer = styled.div`
+    display: flex;
+    width: 100%;
+    margin-top: 20px;
+    margin-bottom: 30px;
+`
+const DiaryListSelect = styled.select`
+    width: 50%;
+    margin-right: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #ececec;
+    
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+
+    cursor: pointer;
+    font-family: "Nanum Pen Script";
+    font-size: 18px;
+`
+const Col = styled.div`
+    width: 50%;
+    display: flex;
+    & button{
+        width: 100%;
+    }
+`
+
 const sortOptionList:sortOptionProps[] = [
     {value:"latest",name:"최신순"},
     {value:"oldest",name:"오래된 순"},
@@ -32,21 +64,30 @@ const filterOptionList = [
 
 const ControlMenu  = ({value,onChange,optionList}:controlMenuProps)=>{
     return(
-        <select value={value} onChange={(e)=> onChange(e.target.value)}>
+        <DiaryListSelect value={value} onChange={(e)=> onChange(e.target.value)}>
             {optionList.map((it,idx)=>(
                 <option key={idx} value={it.value}>
                     {it.name}
                 </option>
             ))}
-        </select>
+        </DiaryListSelect>
     );
 };
 
 
 const DiaryList = ({diaryList}:diaryListProps) =>{
+    const navigate = useNavigate();
     const [sortType,setSortType] = useState("latest");
     const [filter, setFilter] = useState("all");
     const getProcessedDiaryList = ()=>{
+        
+        const filterCallBack = (item:dataProps) =>{
+            if(filter === "good"){
+                return item.emotion<=3;
+            }else{
+                return item.emotion >3;
+            }
+        }
         const compare = (a:dataProps,b:dataProps)=>{
             if(sortType === "latest"){
                 return b.date - a.date;
@@ -55,26 +96,34 @@ const DiaryList = ({diaryList}:diaryListProps) =>{
             }
         };
         const copyList:dataProps[] = JSON.parse(JSON.stringify(diaryList))
-        const sortedList = copyList.sort(compare);
+        const filteredList = filter === 'all' ? copyList: copyList.filter((it)=>filterCallBack(it));
+    
+        
+        const sortedList = filteredList.sort(compare);
         
         return sortedList;
     }
     return(
-        <div>
-            <ControlMenu
-                value={sortType}
-                onChange={setSortType}
-                optionList = {sortOptionList}
-            ></ControlMenu>
-            <ControlMenu
-                value={filter}
-                onChange={setFilter}
-                optionList = {filterOptionList}
-            ></ControlMenu>
+        <DiaryListContainer>
+            <Col>
+                <ControlMenu
+                    value={sortType}
+                    onChange={setSortType}
+                    optionList = {sortOptionList}
+                ></ControlMenu>
+                <ControlMenu
+                    value={filter}
+                    onChange={setFilter}
+                    optionList = {filterOptionList}
+                ></ControlMenu>
+            </Col>
+            <Col>
+                <MyButton type={'positive'} text={'새 일기 쓰기'} onClick={()=>navigate("/new")}></MyButton>
+            </Col>
             {getProcessedDiaryList().map((it)=>(
-                <div key = {it.id}>{it.content}</div>
+                <div key = {it.id}>{it.content} {it.emotion}</div>
             ))}
-        </div>
+        </DiaryListContainer>
     );
 };
 
