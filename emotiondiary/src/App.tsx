@@ -5,7 +5,7 @@ import Diary from './pages/Diary';
 import Edit from './pages/Edit';
 import Home from './pages/Home';
 import New from './pages/New';
-
+import styled from 'styled-components'
 interface dataProps{
   id:number,
   date:number,
@@ -55,7 +55,22 @@ type Action =
   | {type:"EDIT";
     data:dataProps};
 
-
+const Background = styled.div`
+    background-color: #f6f6f6;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0px;
+`
+const Container = styled.div`
+    width: 70vw;
+    height: 100vh;
+    background-color: white;
+    box-shadow: rgba(100,100,111,0.2) 0px 7px 29px 0px;
+    padding-left: 20px;
+    padding-right: 20px;
+`
 const reducer = (state:dataProps[],action:Action): dataProps[]=>{
   let newState = [];
   switch(action.type){
@@ -123,12 +138,16 @@ function App() {
       }
       }>
       <BrowserRouter>
-        <Routes>
-          <Route path='/' element={<Home></Home>}/>
-          <Route path='/new' element={<New></New>}/>
-          <Route path='/edit' element={<Edit></Edit>}/>
-          <Route path='/diary/:id' element={<Diary></Diary>}/>
-        </Routes>
+      <Background>
+        <Container>
+          <Routes>
+            <Route path='/' element={<Home></Home>}/>
+            <Route path='/new' element={<New></New>}/>
+            <Route path='/edit/:id' element={<Edit></Edit>}/>
+            <Route path='/diary/:id' element={<Diary></Diary>}/>
+          </Routes>
+        </Container>
+      </Background>
       </BrowserRouter>
     </DiaryDispatchContext.Provider>
   </DiaryStateContext.Provider>

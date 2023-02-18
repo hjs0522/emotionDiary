@@ -11,24 +11,6 @@ interface dataProps{
     emotion:number,
   }
 
-const Background = styled.div`
-    background-color: #f6f6f6;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    margin: 0px;
-`
-
-const Container = styled.div`
-    width: 70vw;
-    height: 100vh;
-    background-color: white;
-    box-shadow: rgba(100,100,111,0.2) 0px 7px 29px 0px;
-    padding-left: 20px;
-    padding-right: 20px;
-`
-
 function Home (){
     const diaryList:dataProps[] = useContext(DiaryStateContext);
     const [data,setData] = useState<dataProps[]>([{
@@ -63,16 +45,14 @@ function Home (){
         setCurDate(new Date(curDate.getFullYear(),curDate.getMonth()-1,curDate.getDate()))
     }
     return(
-        <Background>
-            <Container>
-                <MyHeader 
-                    headText={headText}
-                    leftChild={<MyButton text={"<"} onClick={decreaseMonth}></MyButton>}
-                    rightChild={<MyButton text={">"} onClick={increaseMonth}></MyButton>}
-                ></MyHeader>
-                <DiaryList diaryList={data}></DiaryList>
-            </Container>
-        </Background>
+        <>
+         <MyHeader 
+            headText={headText}
+            leftChild={<MyButton text={"<"} onClick={decreaseMonth}></MyButton>}
+            rightChild={<MyButton text={">"} onClick={increaseMonth}></MyButton>}
+        ></MyHeader>
+        <DiaryList diaryList={data}></DiaryList>
+        </>
     );
 }
 

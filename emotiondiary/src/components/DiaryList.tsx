@@ -2,6 +2,7 @@ import React, {useState } from "react";
 import { useNavigate } from "react-router-dom";
 import MyButton from "./MyButton";
 import styled from 'styled-components';
+import DiaryItem from "./DiaryItem";
 interface dataProps{
     id:number,
     date:number,
@@ -104,26 +105,30 @@ const DiaryList = ({diaryList}:diaryListProps) =>{
         return sortedList;
     }
     return(
-        <DiaryListContainer>
-            <Col>
-                <ControlMenu
-                    value={sortType}
-                    onChange={setSortType}
-                    optionList = {sortOptionList}
-                ></ControlMenu>
-                <ControlMenu
-                    value={filter}
-                    onChange={setFilter}
-                    optionList = {filterOptionList}
-                ></ControlMenu>
-            </Col>
-            <Col>
-                <MyButton type={'positive'} text={'새 일기 쓰기'} onClick={()=>navigate("/new")}></MyButton>
-            </Col>
+        <>
+            <DiaryListContainer>
+                <Col>
+                    <ControlMenu
+                        value={sortType}
+                        onChange={setSortType}
+                        optionList = {sortOptionList}
+                    ></ControlMenu>
+                    <ControlMenu
+                        value={filter}
+                        onChange={setFilter}
+                        optionList = {filterOptionList}
+                    ></ControlMenu>
+                </Col>
+                <Col>
+                    <MyButton type={'positive'} text={'새 일기 쓰기'} onClick={()=>navigate("/new")}></MyButton>
+                </Col>
+            </DiaryListContainer>
             {getProcessedDiaryList().map((it)=>(
-                <div key = {it.id}>{it.content} {it.emotion}</div>
+                <DiaryListContainer>
+                    <DiaryItem key = {it.id} {...it}></DiaryItem>
+                </DiaryListContainer>
             ))}
-        </DiaryListContainer>
+        </>
     );
 };
 
